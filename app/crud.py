@@ -1,10 +1,9 @@
+from sqlalchemy.orm import Session
 from passlib.context import CryptContext
+from app.models import User
 from app.schemas import UserCreate, UserUpdate
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-users_db: list[dict] = []
-current_id: int = 0
 
 
 def hash_password(password: str) -> str:
@@ -15,54 +14,55 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def get_user(user_id: int) -> dict | None:
-    return next((u for u in users_db if u["id"] == user_id), None)
+def get_user(db: Session, user_id: int) -> User | None:
+    return db.query(User).filter(User.id == user_id).first()
 
 
-def get_user_by_email(email: str) -> dict | None:
-    return next((u for u in users_db if u["email"] == email), None)
+def get_user_by_email(db: Session, email: str) -> User | None:
+    return db.query(User).filter(User.email == email).first()
 
 
-def get_user_by_username(username: str) -> dict | None:
-    return next((u for u in users_db if u["username"] == username), None)
+def get_user_by_username(db: Session, username: str) -> User | None:
+    return db.query(User).filter(User.username == username).first()
 
 
-def get_users(skip: int = 0, limit: int = 100) -> list[dict]:
-    return users_db[skip: skip + limit]
+def get_users(db: Session, skip: int = 0, limit: int = 100) -> list[User]:
+    return db.query(User).offset(skip).limit(limit).all()
 
 
-def create_user(user: UserCreate) -> dict:
-    global current_id
-    current_id += 1
-    db_user = {
-        "id": current_id,
-        "email": user.email,
-        "username": user.username,
-        "full_name": user.full_name,
-        "hashed_password": hash_password(user.password),
-        "is_active": user.is_active,
-        "is_superuser": user.is_superuser,
-    }
-    users_db.append(db_user)
+def create_user(db: Session, user: UserCreate) -> User:
+    db_user = User(
+        email=user.email,
+        username=user.username,
+        full_name=user.full_name,
+        hashed_password=hash_password(user.password),
+        is_active=user.is_active,
+        is_superuser=user.is_superuser,
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
     return db_user
 
 
-def update_user(user_id: int, user: UserUpdate) -> dict | None:
-    db_user = get_user(user_id)
+def update_user(db: Session, user_id: int, user: UserUpdate) -> User | None:
+    db_user = get_user(db, user_id)
     if not db_user:
         return None
     update_data = user.model_dump(exclude_unset=True)
     if "password" in update_data:
         update_data["hashed_password"] = hash_password(update_data.pop("password"))
     for key, value in update_data.items():
-        db_user[key] = value
+        setattr(db_user, key, value)
+    db.commit()
+    db.refresh(db_user)
     return db_user
 
 
-def delete_user(user_id: int) -> bool:
-    global users_db
-    user = get_user(user_id)
-    if not user:
+def delete_user(db: Session, user_id: int) -> bool:
+    db_user = get_user(db, user_id)
+    if not db_user:
         return False
-    users_db = [u for u in users_db if u["id"] != user_id]
+    db.delete(db_user)
+    db.commit()
     return True
