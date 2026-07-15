@@ -1,7 +1,7 @@
 import httpx
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.responses import JSONResponse, HTMLResponse, PlainTextResponse
 
 app = FastAPI(title="Mistral Proxy API", description="Proxy compatible con middleware", version="1.0.0")
 
@@ -14,6 +14,10 @@ app.add_middleware(
 )
 
 @app.get("/")
+def ollama_root():
+    return PlainTextResponse("Ollama is running")
+
+@app.get("/dashboard")
 def home():
     html_content = """
     <html>
@@ -40,7 +44,7 @@ def home():
     """
     return HTMLResponse(content=html_content)
 
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "POST", "HEAD", "OPTIONS"])
 def health_check():
     return {"status": "ok"}
 
