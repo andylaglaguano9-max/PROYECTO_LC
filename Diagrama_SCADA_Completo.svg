@@ -1,0 +1,180 @@
+<svg width="1050" height="1350" xmlns="http://www.w3.org/2000/svg" style="font-family: Arial, sans-serif; background-color: white;">
+    <!-- Arrow marker -->
+    <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#333" />
+        </marker>
+        <marker id="arrow-dashed" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#333" />
+        </marker>
+    </defs>
+
+    <!-- Main Column Boxes -->
+    <g stroke="#333" stroke-width="2" fill="#fff">
+        <!-- N1 -->
+        <rect x="350" y="50" width="300" height="50" rx="5" />
+        <!-- N2 -->
+        <rect x="350" y="150" width="300" height="70" rx="5" />
+        <!-- N3 -->
+        <rect x="350" y="270" width="300" height="70" rx="5" />
+        <!-- N4 -->
+        <rect x="350" y="390" width="300" height="70" rx="5" />
+        <!-- D1 (Rhombus) -->
+        <polygon points="500,510 600,550 500,590 400,550" fill="#fff3e0" stroke="#f57c00" />
+        <!-- N5 -->
+        <rect x="350" y="650" width="300" height="70" rx="5" />
+        <!-- N6 -->
+        <rect x="350" y="770" width="300" height="70" rx="5" />
+        <!-- D2 -->
+        <polygon points="500,890 600,930 500,970 400,930" fill="#fff3e0" stroke="#f57c00" />
+        <!-- N7 -->
+        <rect x="350" y="1030" width="300" height="80" rx="5" />
+        <!-- N8 -->
+        <rect x="350" y="1160" width="300" height="50" rx="5" />
+        
+        <!-- Bloqueado Box -->
+        <rect x="750" y="510" width="200" height="80" rx="5" fill="#ffebee" stroke="#c62828" />
+    </g>
+
+    <!-- Edges -->
+    <g stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrow)">
+        <line x1="500" y1="100" x2="500" y2="150" />
+        <line x1="500" y1="220" x2="500" y2="270" />
+        <line x1="500" y1="340" x2="500" y2="390" />
+        <line x1="500" y1="460" x2="500" y2="510" />
+        <line x1="500" y1="590" x2="500" y2="650" />
+        <line x1="500" y1="720" x2="500" y2="770" />
+        <line x1="500" y1="840" x2="500" y2="890" />
+        <line x1="500" y1="970" x2="500" y2="1030" />
+        <line x1="500" y1="1110" x2="500" y2="1160" />
+    </g>
+    <text x="510" y="620" font-size="14" fill="#333" font-weight="bold">No</text>
+    <text x="510" y="1000" font-size="14" fill="#333" font-weight="bold">No</text>
+
+    <!-- Block Edges -->
+    <g stroke="#333" stroke-width="2" stroke-dasharray="6,6" fill="none" marker-end="url(#arrow-dashed)">
+        <line x1="600" y1="550" x2="740" y2="550" />
+        <polyline points="600,930 850,930 850,595" />
+        <polyline points="950,550 980,550 980,1185 660,1185" />
+    </g>
+    <text x="660" y="540" font-size="14" fill="#333" font-weight="bold">Sí</text>
+    <text x="660" y="920" font-size="14" fill="#333" font-weight="bold">Sí</text>
+    
+    <!-- Main Node Text -->
+    <g font-size="14" fill="#000" text-anchor="middle">
+        <text x="500" y="80" font-weight="bold">1. Usuario envía prompt</text>
+        
+        <text x="500" y="180" font-weight="bold">2. FastAPI recibe y asigna UUID</text>
+        <text x="500" y="200" font-size="12" fill="#555">ChatRequest validado por Pydantic</text>
+        
+        <text x="500" y="300" font-weight="bold">3. Clasificación semántica</text>
+        <text x="500" y="320" font-size="12" fill="#555">Modelo SVM + TF-IDF (Puerto 8001)</text>
+        
+        <text x="500" y="420" font-weight="bold">4. Evaluación de reglas (RuleEngine)</text>
+        <text x="500" y="440" font-size="12" fill="#555">5 archivos JSON - regex</text>
+        
+        <text x="500" y="555" font-weight="bold">¿Prompt bloqueado?</text>
+        
+        <text x="500" y="680" font-weight="bold">5. Generación de respuesta</text>
+        <text x="500" y="700" font-size="12" fill="#555">Qwen 2.5 Coder 1.5B (Puerto 11434)</text>
+        
+        <text x="500" y="800" font-weight="bold">6. Validación de salida</text>
+        <text x="500" y="820" font-size="12" fill="#555">output_rules.json / malicious_patterns.json</text>
+        
+        <text x="500" y="935" font-weight="bold">¿Respuesta bloqueada?</text>
+        
+        <text x="500" y="1060" font-weight="bold">7. AuditService registra evento</text>
+        <text x="500" y="1080" font-size="12" fill="#555">audit.jsonl</text>
+        <text x="500" y="1100" font-size="12" fill="#555">Tiempos en ms - decisión final</text>
+        
+        <text x="500" y="1190" font-weight="bold">8. Respuesta retornada al usuario</text>
+        
+        <!-- Block text -->
+        <text x="850" y="545" font-weight="bold" fill="#c62828">Bloqueado</text>
+        <text x="850" y="565" font-size="12" fill="#c62828">Mensaje de rechazo</text>
+    </g>
+
+    <!-- LEFT SIDEBAR -->
+    <!-- Circles -->
+    <g stroke="#333" stroke-width="2" fill="none">
+        <circle cx="50" cy="75" r="12" />
+        <circle cx="50" cy="185" r="12" />
+        <circle cx="50" cy="305" r="12" />
+        <circle cx="50" cy="425" r="12" />
+        <circle cx="50" cy="685" r="12" />
+        <circle cx="50" cy="805" r="12" />
+        <circle cx="50" cy="1070" r="12" />
+    </g>
+    <!-- Numbers in circles -->
+    <g font-size="12" fill="#000" text-anchor="middle" font-weight="bold">
+        <text x="50" y="79">1</text>
+        <text x="50" y="189">2</text>
+        <text x="50" y="309">3</text>
+        <text x="50" y="429">4</text>
+        <text x="50" y="689">5</text>
+        <text x="50" y="809">6</text>
+        <text x="50" y="1074">7</text>
+    </g>
+    <!-- Left Text -->
+    <g font-size="13" fill="#000" text-anchor="start">
+        <text x="70" y="70">Recepción de</text>
+        <text x="70" y="85">solicitud</text>
+        
+        <text x="70" y="180">Validación</text>
+        <text x="70" y="195">de entrada</text>
+        
+        <text x="70" y="300">Clasificación</text>
+        <text x="70" y="315">semántica</text>
+        
+        <text x="70" y="420">Evaluación</text>
+        <text x="70" y="435">de reglas</text>
+        
+        <text x="70" y="680">Generación</text>
+        <text x="70" y="695">de respuesta</text>
+        
+        <text x="70" y="800">Validación</text>
+        <text x="70" y="815">de salida</text>
+        
+        <text x="70" y="1065">Registro</text>
+        <text x="70" y="1080">de evento</text>
+        
+        <!-- Respuesta rechazada text -->
+        <text x="70" y="1180">Respuesta</text>
+        <text x="70" y="1195">rechazada</text>
+    </g>
+    
+    <!-- Dashed arrow for respuesta rechazada -->
+    <line x1="150" y1="1185" x2="330" y2="1185" stroke="#333" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow-dashed)" />
+
+    <!-- BRACKETS (Square lines) -->
+    <g stroke="#999" stroke-width="2" fill="none">
+        <!-- FILTRADO Bracket -->
+        <polyline points="290,260 280,260 280,470 290,470" />
+        <line x1="280" y1="365" x2="270" y2="365" />
+        
+        <!-- GENERACIÓN Bracket -->
+        <polyline points="290,640 280,640 280,850 290,850" />
+        <line x1="280" y1="745" x2="270" y2="745" />
+        
+        <!-- AUDITORÍA Bracket -->
+        <polyline points="290,1020 280,1020 280,1120 290,1120" />
+        <line x1="280" y1="1070" x2="270" y2="1070" />
+    </g>
+
+    <!-- Bracket Labels -->
+    <g font-size="12" font-weight="bold" fill="#555" text-anchor="end">
+        <text x="260" y="370">FILTRADO</text>
+        <text x="260" y="750">GENERACIÓN</text>
+        <text x="260" y="1075">AUDITORÍA</text>
+    </g>
+    
+    <!-- Legend -->
+    <g transform="translate(400, 1260)" font-size="12" fill="#333">
+        <rect x="0" y="0" width="300" height="40" fill="none" stroke="#ccc" stroke-width="1" rx="5" />
+        <line x1="15" y1="20" x2="55" y2="20" stroke="#333" stroke-width="2" marker-end="url(#arrow)" />
+        <text x="65" y="24">Flujo principal</text>
+        
+        <line x1="160" y1="20" x2="195" y2="20" stroke="#333" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow-dashed)" />
+        <text x="205" y="24">Retorno de bloqueo</text>
+    </g>
+</svg>
